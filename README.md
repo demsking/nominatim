@@ -18,9 +18,14 @@ var nominatim = require('nominatim-client');
 
 // Set the global settings here
 nominatim.global({
+  globalQueryElements: {
     useragent: "MyApp",             // The name of your application
     referer: 'http://example.com',  // The referer link
     email: 'user@example.com'       // The valid email
+  },
+  customPath: "/nominatim",     //  exemple for server
+  customPort: 1234,             //  or (search) https://localhost:1234/nominatim/?...  
+  customHost: "localhost",  //  or (reverse) https://localhost:1234/nominatim/reverse?...
 });
 
 // The query
@@ -28,16 +33,23 @@ var query = {
     q: 'Avenue Monseigneur Vogt, Yaounde, Cameroon',
     addressdetails: '1'
 };
+
+// The options
+var options = {
+    headers: {
+      api_key: "My_Super_Api_Key_To_Access_The_Server"
+    }
+};
 ```
 
 ### Search
 
 ```js
-nominatim.search(query, function(err, data) {
+nominatim.search(query, options, function(err, data) {
     if (err) {
         throw err;
     }
-    
+
     console.log(data);
 });
 ```
@@ -74,11 +86,11 @@ query = {
     lon: 11.523433
 };
 
-nominatim.reverse(query, function (err, data) {
+nominatim.reverse(query, options, function (err, data) {
     if (err) {
         throw err;
     }
-    
+
     console.log(data);
 });
 ```
@@ -106,7 +118,7 @@ Output:
   boundingbox: [ '3.8696101', '3.8697112', '11.5237394', '11.5238284' ] }
 ```
 
-## License 
+## License
 
 (The MIT License)
 
